@@ -1,6 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
+  
   home.username = "abdelrahman";
   home.homeDirectory = "/home/abdelrahman";
 
@@ -9,8 +10,21 @@
     ripgrep
 
     fzf
-
     glow
+
+    vscode
+
+    # few language servers
+    lua-language-server
+    nixd
+
+    # rust toolkit
+    (rust-bin.stable.latest.default.override {
+      extensions = [
+        "rust-src"
+        "rust-analyzer"
+      ];
+    })
   ];
 
   programs.git = {
@@ -21,12 +35,32 @@
 
   programs.neovim = 
   let
+
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in
   {
     enable = true;
     plugins = with pkgs.vimPlugins; [
+      {
+        plugin = nvim-cmp;
+	config = toLuaFile ./nvim/completions.lua;
+      }	
+
+      cmp_luasnip
+      cmp-nvim-lsp
+      luasnip
+      {
+        plugin = nvim-tree-lua;
+        type = "lua";
+	config = "require(\"nvim-tree\").setup()";
+      }
+      
+      {
+        plugin = nvim-lspconfig;
+	config = toLuaFile ./nvim/lsp.lua;
+      }
       nvim-web-devicons
+
       {
         plugin = kanagawa-nvim;
 	type = "lua";

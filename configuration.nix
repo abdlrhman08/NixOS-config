@@ -109,7 +109,6 @@
    git
    alacritty
    wget
-
    unstable.neovim
   ];
 

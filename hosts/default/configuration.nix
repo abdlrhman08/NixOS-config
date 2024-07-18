@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nbfc.nix
     ];
 
   # Bootloader.
@@ -87,19 +88,28 @@
   users.users.abdelrahman = {
     isNormalUser = true;
     description = "Abdelrahman";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
     #  thunderbird
       
     ];
   };
 
+  virtualisation.docker.enable = true;	
+
   # Install firefox.
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
+  programs.waybar = {
+    enable = true;
+  };
   
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  programs.tmux = {
+    enable = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -109,7 +119,19 @@
    git
    alacritty
    wget
-   unstable.neovim
+
+   ffmpeg_7
+   wineWowPackages.stable
+   bottles-unwrapped
+
+
+   zed-editor
+  
+   #dev
+   python312
+
+   teams-for-linux
+   vesktop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

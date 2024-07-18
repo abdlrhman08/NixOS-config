@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, unstable, ... }:
 
 {
   
@@ -8,12 +8,17 @@
   home.packages = with pkgs; [
     fastfetch
     ripgrep
+    gnome.ghex
 
     fzf
     glow
+    atac
+    obsidian
+    prismlauncher
+
+    obs-studio
 
     vscode
-
     # few language servers
     lua-language-server
     nixd
@@ -33,14 +38,35 @@
     userEmail = "abdelrahmanhamada65@gmail.com";
   };
 
+  programs.zellij = {
+    enable = true;
+  };
+
   programs.neovim = 
   let
-
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in
   {
     enable = true;
-    plugins = with pkgs.vimPlugins; [
+    extraConfig = toLuaFile ./nvim/init.lua;
+    package = unstable.neovim-unwrapped;
+
+    plugins = with pkgs.vimPlugins; [	
+      plenary-nvim
+      {
+	plugin = telescope-nvim;
+	config = toLuaFile ./nvim/telescope.lua;
+      }
+      {
+        plugin = dressing-nvim;
+	type = "lua";
+	config = "require(\"dressing\").setup({})";
+      }
+      {
+        plugin = indent-blankline-nvim;
+        type = "lua";
+	config = "require(\"ibl\").setup()";
+      }
       {
         plugin = nvim-cmp;
 	config = toLuaFile ./nvim/completions.lua;

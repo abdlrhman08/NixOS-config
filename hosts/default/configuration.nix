@@ -8,12 +8,16 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./wayland.nix
       ./nbfc.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  #latest kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -53,7 +57,6 @@
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
-    
     layout = "us";
     xkbVariant = "";
   };
@@ -62,7 +65,7 @@
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) 
   ];
 
-  # Enable CUPS to print documents.
+ # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
@@ -99,10 +102,6 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-  programs.hyprland.enable = true;
-  programs.waybar = {
-    enable = true;
-  };
   
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -124,7 +123,6 @@
    wineWowPackages.stable
    bottles-unwrapped
 
-
    zed-editor
   
    #dev
@@ -132,7 +130,13 @@
 
    teams-for-linux
    vesktop
+
+   hyprpaper
   ];
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -5,8 +5,10 @@
       ./modules/nvim
       ./modules/desktop
       ./modules/gtk.nix
+      ./modules/kitty.nix
+      ./modules/spicetify.nix
   ];
-  
+
   home.username = "abdelrahman";
   home.homeDirectory = "/home/abdelrahman";
 
@@ -22,12 +24,14 @@
         prismlauncher
 
         obs-studio
-
+        
         vscode
+        devenv
         # few language servers
         lua-language-server
         nixd
 
+        libsForQt5.qt5.qtwayland
         # rust toolkit
         (rust-bin.stable.latest.default.override {
               extensions = [
@@ -35,7 +39,12 @@
                     "rust-analyzer"
               ];
         })
+
+        # fonts
+        maple-mono-NF
   ];
+
+  fonts.fontconfig.enable = true;
 
   programs.git = {
       enable = true;

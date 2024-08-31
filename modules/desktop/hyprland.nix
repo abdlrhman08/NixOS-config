@@ -1,6 +1,8 @@
 { ... }: {
     wayland.windowManager.hyprland = {
         enable = true;
+        xwayland.enable = true;
+
         settings = {
             "$mainMod" = "SUPER";
             "$terminal" = "kitty";
@@ -14,7 +16,10 @@
 
                 blur = {
                     enabled = true;
-                    size = 1;
+                    size = 8;
+                    passes = 1;
+
+                    new_optimizations = true;
                 };
             };
 
@@ -25,6 +30,7 @@
 
             bind = [
                 "$mainMod, Return, exec, $terminal"
+                "ALT, Return, exec, $terminal --class float_kitty"
                 "$mainMod, Q, killactive"
                 "$mainMod, 1, workspace, 1"
                 "$mainMod, 2, workspace, 2"
@@ -39,8 +45,13 @@
                 "$mainMod, mouse:273, resizewindow"
             ];
 
+            windowrule = [
+                "float, obs"
+            ];
+
             windowrulev2 = [
                 "opacity 0.9 0.9, class:($terminal)"
+                "float, class:(float_kitty)"
             ];
 
             monitor = [

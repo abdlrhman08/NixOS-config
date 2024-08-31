@@ -4,5 +4,6 @@
         ./hyprland.nix
         ./waybar.nix
         ./fuzzel.nix
+        ./gnome.nix
     ];
 }

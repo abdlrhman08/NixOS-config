@@ -10,6 +10,8 @@
       ./hardware-configuration.nix
       ./wayland.nix
       ./nbfc.nix
+      ./virtualisation.nix
+      ./gnome.nix
     ];
 
   # Bootloader.
@@ -17,7 +19,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   #latest kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -54,15 +56,12 @@
     enable = true;
     videoDrivers = ["nvidia"];
 
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     layout = "us";
     xkbVariant = "";
   };
 
-  fonts.packages = with pkgs; [ 
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
 
  # Enable CUPS to print documents.
@@ -94,18 +93,17 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
     #  thunderbird
-      
+
     ];
   };
 
-  virtualisation.docker.enable = true;	
-
   # Install firefox.
   programs.firefox.enable = true;
-  
+  programs.steam.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  
+
   programs.tmux = {
     enable = true;
   };
@@ -114,7 +112,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-   kitty
    git
    alacritty
    wget
@@ -123,10 +120,12 @@
    wineWowPackages.stable
    bottles-unwrapped
 
-   zed-editor
-  
+   unstable.zed-editor
+
    #dev
+   clang-tools
    python312
+   pyright
 
    teams-for-linux
    vesktop
@@ -155,7 +154,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  #networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

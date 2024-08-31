@@ -19,6 +19,11 @@
             url = "github:oxalica/rust-overlay";
             inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
+
+        spicetify-nix= {
+            url = "github:Gerg-L/spicetify-nix";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
+        };
     };
 
     outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, rust-overlay, ... }@inputs: {
@@ -28,7 +33,7 @@
                 specialArgs = { inherit inputs; };
                 modules = [
                     ({ pkgs, ... }: {
-                        nixpkgs = { 
+                        nixpkgs = {
                             overlays = [
                                 (self: super: {
                                     unstable = import nixpkgs-unstable {
@@ -43,8 +48,8 @@
                     home-manager.nixosModules.home-manager {
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
-                        home-manager.extraSpecialArgs = { 
-                            inherit inputs; 
+                        home-manager.extraSpecialArgs = {
+                            inherit inputs;
                             unstable = import nixpkgs-unstable {
                                 system = "x86_64-linux";
                             };

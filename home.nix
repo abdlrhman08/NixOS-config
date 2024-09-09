@@ -7,6 +7,7 @@
       ./modules/gtk.nix
       ./modules/kitty.nix
       ./modules/spicetify.nix
+      ./modules/shell.nix
   ];
 
   home.username = "abdelrahman";

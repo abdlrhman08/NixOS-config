@@ -11,6 +11,10 @@
             rebuild = "git add . && sudo nixos-rebuild switch --flake .";
             nixconfig = "cd ~/.dotfiles/nixos";
         };
+
+        initExtra = ''
+            eval "$(direnv hook zsh)"
+        '';
     };
 
     programs.starship = {

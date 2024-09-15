@@ -15,8 +15,12 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev";
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
 
   #latest kernel
   #boot.kernelPackages = pkgs.linuxPackages;
@@ -97,8 +101,8 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-  programs.steam.enable = true;
-
+  
+  #programs.steam.enable = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -114,6 +118,7 @@
    alacritty
    wget
 
+   gparted
    ffmpeg_7
    wineWowPackages.stable
    bottles-unwrapped
@@ -127,6 +132,11 @@
 
    teams-for-linux
    vesktop
+
+
+  (rust-bin.stable.latest.default.override {
+    extensions = [ "rust-src" ];
+  })
 
    hyprpaper
   ];

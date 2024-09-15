@@ -8,6 +8,7 @@
       ./modules/kitty.nix
       ./modules/spicetify.nix
       ./modules/shell.nix
+      ./modules/direnv.nix
   ];
 
   home.username = "abdelrahman";

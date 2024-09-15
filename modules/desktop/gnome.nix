@@ -6,6 +6,7 @@
 
             enabled-extensions = [
                 "dash-to-dock@micxgx.gmail.com"
+                "blur-my-shell@aunetx"
             ];
         };
         "org/gnome/desktop/wm/preferences" = {

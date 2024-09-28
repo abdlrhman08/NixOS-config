@@ -10,6 +10,8 @@
             ll = "ls -l";
             rebuild = "git add . && sudo nixos-rebuild switch --flake .";
             nixconfig = "cd ~/.dotfiles/nixos";
+            projects = "cd ~/projects && ls -1";
+            rsprojects = "cd ~/projects/rust-projects && ls -1";
         };
 
         initExtra = ''

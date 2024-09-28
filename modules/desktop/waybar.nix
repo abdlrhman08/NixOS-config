@@ -1,6 +1,11 @@
-{ ... }: {
+{ config, ... }:
+let
+    lib = config.lib;
+    vars = import ../variables.nix { inherit config; } ;
+in
+{
     programs.waybar = {
         enable = true;
-        style = (builtins.readFile ./style/waybar.css); 
     };
+    home.file.".config/waybar/style.css".source = lib.file.mkOutOfStoreSymlink "${vars.desktop_config}/bar/waybar.css"; 
 }

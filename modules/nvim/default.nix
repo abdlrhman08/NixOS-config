@@ -1,19 +1,32 @@
 { pkgs, unstable, ... }: {
     programs.neovim = let
-        toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
+        readConfig = file: builtins.readFile file;
     in
     {
         enable = true;
-        extraConfig = toLuaFile ./lua/init.lua;
+        extraConfig = ''
+        lua << EOF
+            ${readConfig ./lua/init.lua}
+            ${readConfig ./lua/telescope.lua}
+            ${readConfig ./lua/completions.lua}
+            ${readConfig ./lua/lsp.lua}
+            ${readConfig ./lua/statusbar.lua}
+        EOF'';
+        
         package = unstable.neovim-unwrapped;
 
         plugins = with pkgs.vimPlugins; [	
             plenary-nvim
             aerial-nvim
-            {
-                plugin = telescope-nvim;
-                config = toLuaFile ./lua/telescope.lua;
-            }
+            telescope-nvim
+            nvim-cmp
+            cmp_luasnip
+            cmp-nvim-lsp
+            luasnip
+            lualine-nvim
+            nvim-treesitter.withAllGrammars
+            nvim-lspconfig
+            nvim-web-devicons
             {
                 plugin = dressing-nvim;
                 type = "lua";
@@ -25,35 +38,29 @@
                 config = "require(\"ibl\").setup()";
             }
             {
-                plugin = nvim-cmp;
-                config = toLuaFile ./lua/completions.lua;
-            }	
-
-            cmp_luasnip
-            cmp-nvim-lsp
-            luasnip
-            {
                 plugin = nvim-tree-lua;
                 type = "lua";
-                config = "require(\"nvim-tree\").setup()";
+                config = ''
+                    require("nvim-tree").setup()
+                    vim.keymap.set("n", "<leader>n", function() vim.cmd("NvimTreeToggle") end, {})
+                '';
             }
-
+            #{
+            #    plugin = kanagawa-nvim;
+            #    type = "lua";
+            #    config = "vim.cmd(\"colorscheme kanagawa-dragon\")";
+            #}
             {
-                plugin = nvim-lspconfig;
-                config = toLuaFile ./lua/lsp.lua;
-            }
-            nvim-web-devicons
-
-            {
-                plugin = kanagawa-nvim;
+                plugin = onedark-nvim;
                 type = "lua";
-                config = "vim.cmd(\"colorscheme kanagawa-dragon\")";
+                config = ''
+                    require("onedark").setup {
+                        style = "warmer"
+                    }
+                    require("onedark").load()
+                '';
+
             }
-            {
-                plugin = lualine-nvim;
-                config = toLuaFile ./lua/statusbar.lua;
-            }
-            nvim-treesitter.withAllGrammars
         ];
     };
-                         }
+}
